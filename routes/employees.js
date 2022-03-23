@@ -24,6 +24,8 @@ employeeRouter.get("/:id", (req, res) => {
 	});
 });
 
+// TODO: Get employees by country, email, office location, 
+
 // Get employees by manager ID
 employeeRouter.get("/reports-to/:managerID", (req, res) => {
 	const { managerID } = req.params;

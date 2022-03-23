@@ -61,4 +61,10 @@ skillsRouter.post("/new", (req, res) => {
 	}
 });
 
+// TODO: Delete a skill, update a skill
+// TODO: Get employees by a skill
+// TODO: Get employees by a skill at a particular level
+// TODO: Get employees by combination of skills
+
+
 module.exports = { skillsRouter };
