@@ -5,7 +5,6 @@ const { v4 } = require('uuid')
 
 const profileRouter = express.Router()
 
-// TODO: 'Add a created and updated date field to each entry'
 
 // #region ============================= SKILLS ENDPOINTS =============================
 
@@ -104,7 +103,7 @@ profileRouter.get('/:employeeID/evidence', (req, res) => {
     if (!employeeID) res.status(400).send('No employee ID provided')
 
     pool.query(
-        `SELECT entry_uuid, skill_name, evidence_url, skills.description FROM employees_skills
+        `SELECT entry_uuid, skill_name, evidence_url, evidence.created_at, evidence.updated_at, skills.description FROM employees_skills
                 LEFT JOIN skills
                     ON skills.id = employees_skills.skill_id
                 LEFT JOIN evidence
@@ -129,14 +128,16 @@ profileRouter.post(`/evidence/new`, (req, res) => {
     const { skillEntry, evidenceURL, description } = req.body
     if (!skillEntry) return res.status(400).send('Skill entry ID (a uuid) is required to add a piece of evidence')
     const evidenceUUID = v4()
+    const createdAt = new Date().toISOString()
+    const updatedAt = new Date().toISOString()
     pool.query(
-        `INSERT INTO evidence  (id, evidence_url, description, emp_skill_id)
-        VALUES ($1, $2, $3, $4)`,
+        `INSERT INTO evidence  (id, evidence_url, description, emp_skill_id, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6)`,
         [evidenceUUID, evidenceURL, description, skillEntry],
         (err, result) => {
             console.log(err)
             if (err) return res.status(500).send(err)
-            const createdEntry = { evidenceUUID, skillEntry, evidenceURL, description }
+            const createdEntry = { evidenceUUID, skillEntry, evidenceURL, description, createdAt, updatedAt }
             return res.status(201).send(createdEntry)
         }
     )
@@ -147,12 +148,14 @@ profileRouter.put(`/evidence/update/:evidenceUUID`, (req, res) => {
     const { evidenceURL, description } = req.body
     if (!evidenceUUID) return res.status(400).send('No evidence UUID was provided in the request. Please provide this in the url request params')
     if(!evidenceURL || !description) return res.status(400).send('evidenceURL or description missing from request body')
+    const updatedAt = new Date().toISOString()
     pool.query(
         `UPDATE evidence 
         SET evidence_url=$1,
-            description=$2
+            description=$2,
+            updated_at=$4
         WHERE id=$3`,
-        [evidenceURL, description, evidenceUUID],
+        [evidenceURL, description, evidenceUUID, updatedAt],
         (err, result) => {
             
         }
