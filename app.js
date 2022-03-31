@@ -37,5 +37,5 @@ spdy.createServer({
     if(err) {
         console.error(err)
     }
-    console.log('listenting on port ', process.env.PORT)
+    console.log('******listenting on port ', process.env.PORT)
 })
