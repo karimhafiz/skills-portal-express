@@ -33,7 +33,7 @@ app.use('/profile', profileRouter)
 spdy.createServer({
     key: fs.readFileSync(path.join(__dirname, './certificates/privateKey.key')),
     cert: fs.readFileSync(path.join(__dirname, './certificates/certificate.crt'))
-}, app).listen(3000, (err) => {
+}, app).listen(process.env.port, (err) => {
     if(err) {
         console.error(err)
     }
