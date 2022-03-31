@@ -19,7 +19,6 @@ skillsRouter.get('/all', (req, res) => {
 // Search uses query params in search e.g. endpoint.com/skills/search?skill_name=SEARCHTERM
 skillsRouter.get('/search', (req, res) => {
     const searchQuery = `%${req.query.skill_name}%`
-    console.log(searchQuery)
     pool.query(`SELECT * FROM skills WHERE LOWER(skill_name) LIKE LOWER($1)`, [searchQuery], (err, result) => {
         if (err) {
             console.log(err)
@@ -90,8 +89,72 @@ skillsRouter.delete('/:skillID', (req, res) => {
     })
 })
 
-// TODO: Get employees by a skill
-// TODO: Get employees by a skill at a particular level
+
+//Get employees by a skill ID
+skillsRouter.get('/employees-with-skill/:skillID', (req, res) => {
+    const {skillID} = req.params
+    pool.query(`
+    SELECT DISTINCT firstname, lastname, employees.id AS employee_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    RIGHT JOIN employees_skills
+        ON employees_skills.employee_id = employees.id
+    LEFT JOIN skills
+        ON skills.id = employees_skills.skill_id
+        WHERE skill_id = $1
+    `,
+    [skillID],
+    (err, result) => {
+        if(err) {
+            res.status(500).send(err)
+        } else {
+            res.status(200).send(result.rows)
+        }
+    })
+})
+
+// Get employess by skills search - use query params: skill_name="testing"
+skillsRouter.get('/employees-with-skill-search', (req, res) => {
+    const searchQuery = `%${req.query.skill_name}%`
+    console.log("HELLO")
+    pool.query(`
+    SELECT DISTINCT firstname, lastname, employees.id AS employee_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    RIGHT JOIN employees_skills
+        ON employees_skills.employee_id = employees.id
+    LEFT JOIN skills
+        ON skills.id = employees_skills.skill_id
+        WHERE LOWER(skill_name) LIKE LOWER($1)
+    `,
+    [searchQuery],
+    (err, result) => {
+        if(err) {
+            res.status(500).send(err)
+        } else {
+            res.status(200).send(result.rows)
+        }
+    })
+})
+
+
+// Get employees by a skill at a particular level
+skillsRouter.get('/employees-with-skill/:skillID/level/:skillLevel', (req, res) => {
+    const {skillID, skillLevel} = req.params
+    pool.query(`
+    SELECT DISTINCT firstname, lastname, employees.id AS employee_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    RIGHT JOIN employees_skills
+        ON employees_skills.employee_id = employees.id
+    LEFT JOIN skills
+        ON skills.id = employees_skills.skill_id
+        WHERE skill_id = $1 AND skill_level = $2
+    `,
+    [skillID, skillLevel],
+    (err, result) => {
+        if(err) {
+            res.status(500).send(err)
+        } else {
+            res.status(200).send(result.rows)
+        }
+    })
+})
+
 // TODO: Get employees by combination of skills
 
 module.exports = { skillsRouter }
