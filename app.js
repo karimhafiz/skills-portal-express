@@ -3,6 +3,10 @@ const express = require("express");
 const morgan = require("morgan")
 const bodyParser = require("body-parser")
 const dotenv = require("dotenv")
+const fs = require('fs')
+const spdy = require('spdy')
+const path = require('path')
+
 dotenv.config()
 // Routes
 const {employeeRouter} = require('./routes/employees')
@@ -26,6 +30,12 @@ app.use('/profile', profileRouter)
  - CSV file with all data
 */
 
-app.listen(8000, () => {
-    console.log('listening')
+spdy.createServer({
+    key: fs.readFileSync(path.join(__dirname, './certificates/privateKey.key')),
+    cert: fs.readFileSync(path.join(__dirname, './certificates/certificate.crt'))
+}, app).listen(3000, (err) => {
+    if(err) {
+        console.error(err)
+    }
+    console.log('listenting on port ', process.env.PORT)
 })
