@@ -1,18 +1,19 @@
 // Dependencies
-const express = require("express");
-const morgan = require("morgan")
-const bodyParser = require("body-parser")
-const dotenv = require("dotenv")
+const express = require('express')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
 dotenv.config()
+const port = process.env.PORT || 8888
 // Routes
-const {employeeRouter} = require('./routes/employees')
+const { employeeRouter } = require('./routes/employees')
 const { skillsRouter } = require('./routes/skills')
-const {profileRouter} = require('./routes/profile')
+const { profileRouter } = require('./routes/profile')
 
 // Initialise app and middleware
 const app = express()
 app.use(bodyParser.json())
-app.use(morgan("dev"))
+app.use(morgan('dev'))
 
 // Register routes
 app.use('/employees', employeeRouter)
@@ -26,6 +27,6 @@ app.use('/profile', profileRouter)
  - CSV file with all data
 */
 
-app.listen(8000, () => {
+app.listen(port, () => {
     console.log('listening')
 })
