@@ -9,6 +9,7 @@ const port = process.env.PORT || 8888
 const { employeeRouter } = require('./routes/employees')
 const { skillsRouter } = require('./routes/skills')
 const { profileRouter } = require('./routes/profile')
+const { analyticsRouter } = require('./routes/analytics')
 
 // Initialise app and middleware
 const app = express()
@@ -19,6 +20,7 @@ app.use(morgan('dev'))
 app.use('/employees', employeeRouter)
 app.use('/skills', skillsRouter)
 app.use('/profile', profileRouter)
+app.use('/analytics', analyticsRouter)
 // TODO: Analytics - get raw data
 /*
  - Number of people with a particular skill/combination of skills
