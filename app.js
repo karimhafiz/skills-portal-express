@@ -30,11 +30,14 @@ app.use('/profile', profileRouter)
  - CSV file with all data
 */
 
-spdy.createServer({
-    key: fs.readFileSync('./certificates/privateKey.key'),
-    cert: fs.readFileSync('./certificates/certificate.crt')
-}, app).listen(process.env.PORT, (err) => {
-    if(err) {
+spdy.createServer(
+    {
+        cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
+        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.p12'),
+    },
+    app
+).listen(process.env.PORT, (err) => {
+    if (err) {
         console.error(err)
     }
     console.log('******listenting on port ', process.env.PORT)
