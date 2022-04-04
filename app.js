@@ -31,11 +31,11 @@ app.use('/profile', profileRouter)
 */
 
 console.log('CERTIFICATE!!!: ')
-console.log(fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.pem'))
+console.log(fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'))
 spdy.createServer(
     {
-        cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.pem'),
-        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.pem'),
+        cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
+        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.p12'),
     },
     app
 ).listen(process.env.PORT, (err) => {
