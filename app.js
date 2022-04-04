@@ -42,9 +42,8 @@ console.log('-----------------------------------------------------------')
 
 spdy.createServer(
     {
-        cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
-        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.p12'),
-       
+        cert: fs.readFileSync('/var/ssl/certs/18201CB636B958839C512D485B6BBCE47DF2721B.cer'),
+        key: fs.readFileSync('/var/ssl/private/18201CB636B958839C512D485B6BBCE47DF2721B.pfx'),
     },
     app
 ).listen(process.env.PORT, (err) => {
