@@ -28,11 +28,16 @@ app.use('/profile', profileRouter)
  - Number of people who have updated records by a date and opposite
  - List of accounts that have or haven't been updated (and their details incl managers)
  - CSV file with all data
+
+ Azure certs:
+  cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
+        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.pfx'),
 */
 spdy.createServer(
     {
-        cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
-        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.pfx'),
+        cert: fs.readFileSync('./certificates/certificate.crt'),
+        key: fs.readFileSync('./certificates/privateKey.key'),
+       
     },
     app
 ).listen(process.env.PORT, (err) => {
