@@ -35,7 +35,7 @@ app.use('/profile', profileRouter)
 */
 console.log('----------Certificate and key directory contents: ---------')
 console.log('Certificate Directory:')
-console.log(fs.readdirSync('/var/ssl/private'))
+console.log(fs.readdirSync('/var/ssl/certs'))
 console.log('Key Directory:')
 console.log(fs.readdirSync('/var/ssl/private'))
 console.log('-----------------------------------------------------------')
@@ -43,7 +43,7 @@ console.log('-----------------------------------------------------------')
 spdy.createServer(
     {
         cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
-        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.p12'),
+        key: fs.readFileSync('/var/ssl/private/901C65977AC7CD872442CACB865D01B94F9C699F.p12.pem'),
        
     },
     app
