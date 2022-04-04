@@ -30,6 +30,8 @@ app.use('/profile', profileRouter)
  - CSV file with all data
 */
 
+console.log('CERTIFICATE!!!: ')
+console.log(fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'))
 spdy.createServer(
     {
         cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
@@ -40,7 +42,5 @@ spdy.createServer(
     if (err) {
         console.error(err)
     }
-    console.log('CERTIFICATE!!!: ')
-    console.loe(fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'))
     console.log('******listenting on port ', process.env.PORT)
 })
