@@ -29,9 +29,6 @@ app.use('/profile', profileRouter)
  - List of accounts that have or haven't been updated (and their details incl managers)
  - CSV file with all data
 */
-
-console.log('CERTIFICATE!!!: ')
-console.log(fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'))
 spdy.createServer(
     {
         cert: fs.readFileSync('/var/ssl/certs/901C65977AC7CD872442CACB865D01B94F9C699F.der'),
