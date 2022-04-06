@@ -45,6 +45,7 @@ spdy.createServer(
         // cert: fs.readFileSync('/var/ssl/certs/18201CB636B958839C512D485B6BBCE47DF2721B.der'),
         // pfx: fs.readFileSync('/var/ssl/private/18201CB636B958839C512D485B6BBCE47DF2721B.p12'),
         pfx: fs.readFileSync('/var/ssl/private/18201CB636B958839C512D485B6BBCE47DF2721B.p12'),
+        passphrase: '',
     },
 
     app
