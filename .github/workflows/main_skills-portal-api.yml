@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'skills-portal-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_50DC8B4C562A4C9E8C4307D69CC96415 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_400439F64B6044DB8C78B5447825C487 }}
           package: .
