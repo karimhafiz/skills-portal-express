@@ -8,7 +8,7 @@ employeeRouter.get('/all', async (req, res) => {
         if (err) {
             res.status(500).send(err)
         } else {
-            res.send(result)
+            res.send(result.rows)
         }
     })
 })
