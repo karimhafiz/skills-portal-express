@@ -94,7 +94,7 @@ skillsRouter.get('/employees-with-skill/:skillID', (req, res) => {
     const { skillID } = req.params
     pool.query(
         `
-    SELECT DISTINCT firstname, lastname, employees.id AS employee_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    SELECT DISTINCT employees.id AS id, firstname, lastname, country, email, manager_id, skill_name, skills.id AS skill_id, skill_level FROM employees
     RIGHT JOIN employees_skills
         ON employees_skills.employee_id = employees.id
     LEFT JOIN skills
@@ -115,10 +115,9 @@ skillsRouter.get('/employees-with-skill/:skillID', (req, res) => {
 // Get employess by skills search - use query params: skill_name="testing"
 skillsRouter.get('/employees-with-skill-search', (req, res) => {
     const searchQuery = `%${req.query.skill_name}%`
-    console.log('HELLO')
     pool.query(
         `
-    SELECT DISTINCT firstname, lastname, employees.id AS employee_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    SELECT DISTINCT employees.id AS id, firstname, lastname, country, email, manager_id, skill_name, skills.id AS skill_id, skill_level FROM employees
     RIGHT JOIN employees_skills
         ON employees_skills.employee_id = employees.id
     LEFT JOIN skills
@@ -141,7 +140,7 @@ skillsRouter.get('/employees-with-skill/:skillID/level/:skillLevel', (req, res) 
     const { skillID, skillLevel } = req.params
     pool.query(
         `
-    SELECT DISTINCT firstname, lastname, employees.id AS employee_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    SELECT DISTINCT employees.id AS id, firstname, lastname, country, email, manager_id, skill_name, skills.id AS skill_id, skill_level FROM employees
     RIGHT JOIN employees_skills
         ON employees_skills.employee_id = employees.id
     LEFT JOIN skills
