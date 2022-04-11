@@ -1,6 +1,6 @@
 const express = require('express')
 const { pool } = require('../db/db')
-let converter = require('json-2-csv')
+
 const analyticsRouter = express.Router()
 
 // analyticsRouter.get('/employees-and-skills', (req, res) => {
