@@ -56,7 +56,7 @@ skillsRouter.post('/new', (req, res) => {
 
 // UPDATE A SKILL
 skillsRouter.put('/:skillID', (req, res) => {
-    const { id } = req.params
+    const { skillID } = req.params
     const { skillName, category, description } = req.body
     if (!skillName || !category || !description) res.status(400).send('Incomplete skill object')
     pool.query(
@@ -66,7 +66,7 @@ skillsRouter.put('/:skillID', (req, res) => {
 		category=$2,
 		description=$3
 	WHERE id=$4`,
-        [skillName, category, description, id],
+        [skillName, category, description, skillID],
         (err, result) => {
             if (err) {
                 res.status(500).send(err)

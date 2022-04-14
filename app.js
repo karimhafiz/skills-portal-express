@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 dotenv.config()
-const port = process.env.PORT || 8888
+const port = process.env.PORT || 8080
 // Routes
 const { employeeRouter } = require('./routes/employees')
 const { skillsRouter } = require('./routes/skills')
@@ -30,5 +30,5 @@ app.use('/analytics', analyticsRouter)
 */
 
 app.listen(port, () => {
-    console.log('listening')
+    console.log('listening on port: ' + port)
 })
