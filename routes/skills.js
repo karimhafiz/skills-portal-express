@@ -166,32 +166,36 @@ Req body must include
     } 
 */
 
-// skillsRouter.get('/employees-with-skillset', (req, res) => {
-//     const skillsArr = req.body.skills
-//     if (skillsArr.length === 0 || !skillsArr) {
-//         res.status(403).send('No skills specified')
-//     }
+skillsRouter.get('/employees-with-skillset', (req, res) => {
+    const skillsArr = req.body.skills
+    if (skillsArr.length === 0 || !skillsArr) {
+        res.status(403).send('No skills specified')
+    }
 
-//     const skillsQueryString = `${skillsArr.join(', ')}`
-//     console.log(skillsArr)
-//     pool.query(
-//         `
-//         WITH named_skills AS (
-//         SELECT skill_name, category, skill_id, skill_level, employee_id FROM skills
-//             JOIN employees_skills
-//             ON skills.id = employees_skills.skill_id
-//         )
-//         SELECT DISTINCT employees.id, firstname, lastname, skill_id, skill_name, skill_level
-//         FROM employees
-//         JOIN named_skills
-//             ON named_skills.employee_id= employees.id
-//         WHERE skill_name IN ($1)
-//         ORDER BY lastname, firstname`,
-//         [skillsArr],
-//         (err, result) => {
-//             res.send(result.rows)
-//         }
-//     )
-// })
+    const skillsQueryString = `${skillsArr.join(', ')}`
+    console.log(skillsArr)
+    pool.query(
+        `
+      SELECT employees_with_skills.id, employees_with_skills.firstname, employees_with_skills.lastname, employees_with_skills.country, employees_with_skills.email, employees_with_skills.manager_id
+FROM (
+SELECT employees.id AS id, firstname, lastname, country, email, manager_id, skill_name, skills.id AS skill_id, skill_level FROM employees
+    RIGHT JOIN employees_skills
+        ON employees_skills.employee_id = employees.id
+    LEFT JOIN skills
+        ON skills.id = employees_skills.skill_id
+		WHERE skill_name = ANY ($1)
+	) AS employees_with_skills
+	GROUP BY(employees_with_skills.id, employees_with_skills.firstname, employees_with_skills.lastname, employees_with_skills.country, employees_with_skills.email, employees_with_skills.manager_id)
+	HAVING COUNT(id) >= $2`,
+        [skillsArr, skillsArr.length],
+        (err, result) => {
+            if (err) {
+                res.status(500).send(err)
+            } else {
+                res.send(result.rows)
+            }
+        }
+    )
+})
 
 module.exports = { skillsRouter }
