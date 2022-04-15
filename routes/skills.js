@@ -183,7 +183,7 @@ SELECT employees.id AS id, firstname, lastname, country, email, manager_id, skil
         ON employees_skills.employee_id = employees.id
     LEFT JOIN skills
         ON skills.id = employees_skills.skill_id
-		WHERE skill_name = ANY ($1)
+		WHERE skill_id = ANY ($1)
 	) AS employees_with_skills
 	GROUP BY(employees_with_skills.id, employees_with_skills.firstname, employees_with_skills.lastname, employees_with_skills.country, employees_with_skills.email, employees_with_skills.manager_id)
 	HAVING COUNT(id) >= $2`,
