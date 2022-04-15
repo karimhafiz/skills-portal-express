@@ -167,7 +167,7 @@ Req body must include
 */
 
 skillsRouter.get('/employees-with-skillset', (req, res) => {
-    const skillsArr = req.body.skills
+    const skillsArr = req.query.skills.split(',')
     if (skillsArr.length === 0 || !skillsArr) {
         res.status(403).send('No skills specified')
     }
