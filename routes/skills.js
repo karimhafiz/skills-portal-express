@@ -33,15 +33,16 @@ skillsRouter.get('/search', (req, res) => {
 // Add a new skill
 /** newSkill = {skill_name: string, category: string, description: string} */
 skillsRouter.post('/new', (req, res) => {
-    const { skillName, category, description } = req.body
+    const { skillName, category, description, isCertification } = req.body
     if (!skillName || !category) {
-        res.status(400).send('Incomplete skill object')
+        res.status(400).send(`Incomplete skill object. New skill must include following fields in request body:
+        skillName, category, description, isCertification`)
     } else {
         const id = uuid.v4()
         pool.query(
-            `INSERT INTO skills (id, skill_name, category, description)
-        VALUES ($1, $2, $3, $4 )`,
-            [id, skillName, category, description],
+            `INSERT INTO skills (id, skill_name, category, description, is_certification)
+        VALUES ($1, $2, $3, $4, $5 )`,
+            [id, skillName, category, description, isCertification],
             (err, result) => {
                 if (err) {
                     console.log(err)
@@ -57,20 +58,27 @@ skillsRouter.post('/new', (req, res) => {
 // UPDATE A SKILL
 skillsRouter.put('/:skillID', (req, res) => {
     const { skillID } = req.params
-    const { skillName, category, description } = req.body
-    if (!skillName || !category || !description) res.status(400).send('Incomplete skill object')
+    const { skillName, category, description, isCertification } = req.body
+    if (!skillName || !category || !description || !isCertification)
+        res.status(400).send(
+            `Incomplete skill object. Skill data must include following fields in request body:
+        skillName, category, description, isCertification`
+        )
     pool.query(
         `
 	UPDATE skills
 	SET	skill_name=$1,
 		category=$2,
-		description=$3
-	WHERE id=$4`,
-        [skillName, category, description, skillID],
+		description=$3,
+        is_certification=$4
+	WHERE id=$5`,
+        [skillName, category, description, isCertification, skillID],
         (err, result) => {
             if (err) {
+                console.log(err)
                 res.status(500).send(err)
             } else {
+                console.log(isCertification)
                 res.send(`Executed command successfully: ${result.command}`)
             }
         }
