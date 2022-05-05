@@ -5,7 +5,6 @@ const { v4 } = require('uuid')
 
 const profileRouter = express.Router()
 
-
 // #region ============================= SKILLS ENDPOINTS =============================
 
 // Get the skills for a given employee ID
@@ -13,7 +12,7 @@ profileRouter.get('/:employeeID/skills', (req, res) => {
     const { employeeID } = req.params
     if (!employeeID) res.status(400).send('No employee ID specified')
     pool.query(
-        `SELECT entry_uuid, employee_id, skill_name, skill_level, created_at, updated_at FROM employees_skills
+        `SELECT entry_uuid, employee_id, skill_name, skill_level, is_certification, created_at, updated_at FROM employees_skills
             LEFT JOIN skills
                 ON skills.id = employees_skills.skill_id
             WHERE employee_id=$1`,
@@ -32,15 +31,15 @@ profileRouter.post('/:employeeID/add-skill', (req, res) => {
     // Return 400 if invalid skills level is sent
     if ((skillLevel !== '' || !skillLevel) && !(Number(skillLevel) > 0 && Number(skillLevel) < 4)) {
         return res
-        .status(400)
+            .status(400)
             .send('Invalid skill level. Skill level must be between 1 and 3, or an empty string if specified in body')
-        }
-        // Send 400 if invalid skill ID sent in req body
-        if (!skillID || skillID === '') {
-            return res.status(400).send('Invaid skill ID')
-        }
-        // Generate a UUID for the database entry
-        const entryID = v4()
+    }
+    // Send 400 if invalid skill ID sent in req body
+    if (!skillID || skillID === '') {
+        return res.status(400).send('Invaid skill ID')
+    }
+    // Generate a UUID for the database entry
+    const entryID = v4()
     const createdAt = new Date().toISOString()
     // Use this for both created and updated - this endpoint only creates new records
     pool.query(
@@ -96,7 +95,6 @@ profileRouter.put('/update-entry/:entryID', (req, res) => {
 
 // #region ============================= EVIDENCE ENDPOINTS =============================
 
-
 // GET ALL EVIDENCE FOR AN EMPLOYEE
 profileRouter.get('/:employeeID/evidence', (req, res) => {
     const { employeeID } = req.params
@@ -146,8 +144,12 @@ profileRouter.post(`/evidence/new`, (req, res) => {
 profileRouter.put(`/evidence/update/:evidenceUUID`, (req, res) => {
     const { evidenceUUID } = req.params
     const { evidenceURL, description } = req.body
-    if (!evidenceUUID) return res.status(400).send('No evidence UUID was provided in the request. Please provide this in the url request params')
-    if(!evidenceURL || !description) return res.status(400).send('evidenceURL or description missing from request body')
+    if (!evidenceUUID)
+        return res
+            .status(400)
+            .send('No evidence UUID was provided in the request. Please provide this in the url request params')
+    if (!evidenceURL || !description)
+        return res.status(400).send('evidenceURL or description missing from request body')
     const updatedAt = new Date().toISOString()
     pool.query(
         `UPDATE evidence 
@@ -156,9 +158,7 @@ profileRouter.put(`/evidence/update/:evidenceUUID`, (req, res) => {
             updated_at=$4
         WHERE id=$3`,
         [evidenceURL, description, evidenceUUID, updatedAt],
-        (err, result) => {
-            
-        }
+        (err, result) => {}
     )
 })
 
