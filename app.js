@@ -2,6 +2,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const dotenv = require('dotenv')
 dotenv.config()
 const port = process.env.PORT || 8080
@@ -15,6 +16,7 @@ const { analyticsRouter } = require('./routes/analytics')
 const app = express()
 app.use(bodyParser.json())
 app.use(morgan('dev'))
+app.use(cors())
 
 // Register routes
 app.use('/employees', employeeRouter)

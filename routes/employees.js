@@ -80,6 +80,7 @@ employeeRouter.get('/reports-to/:managerID', (req, res) => {
 
 // Post a new employee - body must be in format below
 employeeRouter.post('/new', (req, res) => {
+    console.log(req)
     /**
      * {id: string, firstname: string, surname: string, sountry: string, email: string, manager_id: string} body
      */
