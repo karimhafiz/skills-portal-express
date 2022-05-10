@@ -51,16 +51,19 @@ employeeRouter.get('/email-address/:emailAddress', (req, res) => {
 
 // Get employees by email and regions
 employeeRouter.get('/email-address/:emailAddress/country/:countryCode', (req, res) => {
-    const { emailAddress, countryCode } = req.params;
+    const { emailAddress, countryCode } = req.params
     const emailTerm = `%${emailAddress.toLowerCase()}%`
-    pool.query(`SELECT * FROM employees WHERE LOWER(email) LIKE $1 AND LOWER(country) = $2`,
-        [emailTerm, countryCode.toLowerCase()], (err, result) => {
+    pool.query(
+        `SELECT * FROM employees WHERE LOWER(email) LIKE $1 AND LOWER(country) = $2`,
+        [emailTerm, countryCode.toLowerCase()],
+        (err, result) => {
             if (err) {
-            res.status(500).send(err)
+                res.status(500).send(err)
             } else {
                 res.send(result.rows)
+            }
         }
-    })
+    )
 })
 
 // Get employees by manager ID
