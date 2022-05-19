@@ -135,7 +135,7 @@ profileRouter.post(`/evidence/new`, (req, res) => {
     pool.query(
         `INSERT INTO evidence  (id, evidence_url, description, emp_skill_id, created_at, updated_at)
         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [evidenceUUID, evidenceURL, description, skillEntry],
+        [evidenceUUID, evidenceURL, description, skillEntry, createdAt, updatedAt],
         (err, result) => {
             console.log(err)
             if (err) return res.status(500).send(err)
