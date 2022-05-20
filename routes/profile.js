@@ -2,6 +2,7 @@ const express = require('express')
 const { pool } = require('../db/db')
 const _ = require('lodash')
 const { v4 } = require('uuid')
+const { rest } = require('lodash')
 
 const profileRouter = express.Router()
 
@@ -125,6 +126,22 @@ profileRouter.get('/:employeeID/evidence', (req, res) => {
         }
     )
 })
+
+// GET EVIDENCE FOR A SKILL ENTRY
+profileRouter.get('/skillEntry/:skillEntryID/evidence' , (req, res) => {
+    const {skillEntryID} = req.params
+    pool.query(
+        `SELECT * FROM evidence WHERE emp_skill_id = $1`,
+        [skillEntryID],
+        (err, result) => {
+            if(err) {
+                return res.status(500).send(err.message)
+            } else {
+                res.status(200).send(result.rows)
+            }
+        }
+    )
+})
 // ADD NEW EVIDENCE
 profileRouter.post(`/evidence/new`, (req, res) => {
     const { skillEntry, evidenceURL, description } = req.body
@@ -162,7 +179,33 @@ profileRouter.put(`/evidence/update/:evidenceUUID`, (req, res) => {
             updated_at=$4
         WHERE id=$3`,
         [evidenceURL, description, evidenceUUID, updatedAt],
-        (err, result) => {}
+        (err, result) => {
+            if(err) {
+                res.status(500).send(err.message)
+            } else {
+                console.log(result.rows)
+                res.status(204).send(result.rows)
+            }
+        }
+    )
+})
+
+// DELETE EVIDENCE
+profileRouter.delete(`/evidence/delete/:evidenceUUID`, (req, res) => {
+    const {evidenceUUID} = req.params
+    if(!evidenceUUID) {
+        return res.status(400).send('No evidence UUID provided in the request')
+    }
+    pool.query(
+        `DELETE FROM evidence WHERE id=$1`,
+        [evidenceUUID],
+        (err, result) => {
+            if(err) {
+                return res.status(500).send(err.message)
+            } else {
+                return res.status(204).send()
+            }
+        }
     )
 })
 
