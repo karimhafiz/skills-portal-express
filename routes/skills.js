@@ -7,7 +7,9 @@ const skillsRouter = express.Router()
 
 // Get all skills
 skillsRouter.get('/all', (req, res) => {
-    pool.query(`SELECT * FROM skills`, (err, result) => {
+    pool.query(`SELECT skills.id, skill_name, description, category, is_certification, competency_type, lvl_1, lvl_2, lvl_3 FROM skills 
+    LEFT JOIN skill_levels
+    ON skills.skill_levels = skill_levels.id`, (err, result) => {
         if (err) {
             res.status(500).send(err)
         } else {

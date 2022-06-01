@@ -33,8 +33,9 @@ profileRouter.get('/:employeeID/skills', (req, res) => {
 profileRouter.post('/:employeeID/add-skill', (req, res) => {
     const { skillID, skillLevel } = req.body
     const { employeeID } = req.params
+    const allowedSkillLevels = [1, 2, 3, null]
     // Return 400 if invalid skills level is sent
-    if ((skillLevel !== '' || !skillLevel) && !(Number(skillLevel) > 0 && Number(skillLevel) < 4)) {
+    if (!allowedSkillLevels.includes(skillLevel)) {
         return res
             .status(400)
             .send('Invalid skill level. Skill level must be between 1 and 3, or an empty string if specified in body')
