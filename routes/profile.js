@@ -13,7 +13,7 @@ profileRouter.get('/:employeeID/skills', (req, res) => {
     const { employeeID } = req.params
     if (!employeeID) res.status(400).send('No employee ID specified')
     pool.query(
-        `SELECT entry_uuid, employee_id, skill_name, skill_level, is_certification, skill_levels, employees_skills.created_at, employees_skills.updated_at FROM employees_skills
+        `SELECT entry_uuid, employee_id, skill_name, skill_level, is_certification, skill_levels, employees_skills.created_at, employees_skills.updated_at, category FROM employees_skills
             LEFT JOIN skills
                 ON skills.id = employees_skills.skill_id
             WHERE employee_id=$1`,
