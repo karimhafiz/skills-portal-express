@@ -5,6 +5,18 @@ const { pool } = require('../db/db')
 
 const skillsRouter = express.Router()
 
+//Get all distinct skill category
+skillsRouter.get('/distinctSkillCategory', (req, res) => {
+    pool.query(`SELECT DISTINCT category FROM skills`, (err, result) => {
+        if (err) {
+            res.status(500).send(err)
+        } else {
+            res.send(result.rows)
+        }
+    })
+})
+
+
 // Get all skills
 skillsRouter.get('/all', (req, res) => {
     pool.query(`SELECT skills.id, skill_name, description, category, is_certification, competency_type, lvl_1, lvl_2, lvl_3 FROM skills 
