@@ -11,6 +11,7 @@ const { employeeRouter } = require('./routes/employees')
 const { skillsRouter } = require('./routes/skills')
 const { profileRouter } = require('./routes/profile')
 const { analyticsRouter } = require('./routes/analytics')
+const { pool } = require('./db/db')
 
 // Initialise app and middleware
 const app = express()
@@ -31,6 +32,13 @@ app.use('/analytics', analyticsRouter)
  - CSV file with all data
 */
 
-app.listen(port, () => {
-    console.log('listening on port: ' + port)
+app.listen(port, async () => {
+    console.log('connecting to database...')
+    try {
+        await pool.connect()
+        console.log('listening on port: ' + port)
+    } catch (err) {
+        console.warn(err)
+        process.exit()
+    }
 })
