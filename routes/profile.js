@@ -44,13 +44,15 @@ profileRouter.post('/:employeeID/add-skill', (req, res) => {
     if (!skillID || skillID === '') {
         return res.status(400).send('Invaid skill ID')
     }
+    const skillLevelForQuery = typeof skillLevel === 'number' ? skillLevel : null
+
     // Generate a UUID for the database entry
     const entryID = v4()
     const createdAt = new Date().toISOString()
     // Use this for both created and updated - this endpoint only creates new records
     pool.query(
         `INSERT INTO employees_skills (employee_id, skill_id, skill_level, entry_uuid, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)`,
-        [employeeID, skillID, skillLevel, entryID, createdAt, createdAt],
+        [employeeID, skillID, skillLevelForQuery, entryID, createdAt, createdAt],
         (err, result) => {
             console.log(err)
             if (err) return res.status(500).send(err)
