@@ -33,7 +33,7 @@ profileRouter.get('/:employeeID/skills', (req, res) => {
 profileRouter.post('/:employeeID/add-skill', (req, res) => {
     const { skillID, skillLevel } = req.body
     const { employeeID } = req.params
-    const allowedSkillLevels = [1, 2, 3, null]
+    const allowedSkillLevels = [1, 2, 3, null, ' ', '']
     // Return 400 if invalid skills level is sent
     if (!allowedSkillLevels.includes(skillLevel)) {
         return res
@@ -129,19 +129,15 @@ profileRouter.get('/:employeeID/evidence', (req, res) => {
 })
 
 // GET EVIDENCE FOR A SKILL ENTRY
-profileRouter.get('/skillEntry/:skillEntryID/evidence' , (req, res) => {
-    const {skillEntryID} = req.params
-    pool.query(
-        `SELECT * FROM evidence WHERE emp_skill_id = $1`,
-        [skillEntryID],
-        (err, result) => {
-            if(err) {
-                return res.status(500).send(err.message)
-            } else {
-                res.status(200).send(result.rows)
-            }
+profileRouter.get('/skillEntry/:skillEntryID/evidence', (req, res) => {
+    const { skillEntryID } = req.params
+    pool.query(`SELECT * FROM evidence WHERE emp_skill_id = $1`, [skillEntryID], (err, result) => {
+        if (err) {
+            return res.status(500).send(err.message)
+        } else {
+            res.status(200).send(result.rows)
         }
-    )
+    })
 })
 // ADD NEW EVIDENCE
 profileRouter.post(`/evidence/new`, (req, res) => {
@@ -181,7 +177,7 @@ profileRouter.put(`/evidence/update/:evidenceUUID`, (req, res) => {
         WHERE id=$3`,
         [evidenceURL, description, evidenceUUID, updatedAt],
         (err, result) => {
-            if(err) {
+            if (err) {
                 res.status(500).send(err.message)
             } else {
                 console.log(result.rows)
@@ -193,21 +189,17 @@ profileRouter.put(`/evidence/update/:evidenceUUID`, (req, res) => {
 
 // DELETE EVIDENCE
 profileRouter.delete(`/evidence/delete/:evidenceUUID`, (req, res) => {
-    const {evidenceUUID} = req.params
-    if(!evidenceUUID) {
+    const { evidenceUUID } = req.params
+    if (!evidenceUUID) {
         return res.status(400).send('No evidence UUID provided in the request')
     }
-    pool.query(
-        `DELETE FROM evidence WHERE id=$1`,
-        [evidenceUUID],
-        (err, result) => {
-            if(err) {
-                return res.status(500).send(err.message)
-            } else {
-                return res.status(204).send()
-            }
+    pool.query(`DELETE FROM evidence WHERE id=$1`, [evidenceUUID], (err, result) => {
+        if (err) {
+            return res.status(500).send(err.message)
+        } else {
+            return res.status(204).send()
         }
-    )
+    })
 })
 
 // #endregion ============================= EVIDENCE ENDPOINTS =============================
