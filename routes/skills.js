@@ -73,7 +73,7 @@ skillsRouter.post('/new', (req, res) => {
 skillsRouter.put('/:skillID', (req, res) => {
     const { skillID } = req.params
     const { skillName, category, description, isCertification } = req.body
-    if (!skillName || !category || !description || isCertification === null)
+    if (!skillName || !category || isCertification === null)
         res.status(400).send(
             `Incomplete skill object. Skill data must include following fields in request body:
         skillName, category, description, isCertification`
