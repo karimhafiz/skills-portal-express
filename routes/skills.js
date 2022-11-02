@@ -47,16 +47,16 @@ skillsRouter.get('/search', (req, res) => {
 // Add a new skill
 /** newSkill = {skill_name: string, category: string, description: string} */
 skillsRouter.post('/new', (req, res) => {
-    const { skillName, category, description, isCertification } = req.body
+    const { skillName, category, description, isCertification, skill_levels } = req.body
     if (!skillName || !category || isCertification === null) {
         res.status(400).send(`Incomplete skill object. New skill must include following fields in request body:
         skillName, category, description, isCertification`)
     } else {
         const id = uuid.v4()
         pool.query(
-            `INSERT INTO skills (id, skill_name, category, description, is_certification)
-        VALUES ($1, $2, $3, $4, $5 )`,
-            [id, skillName, category, description, isCertification],
+            `INSERT INTO skills (id, skill_name, category, description, is_certification, skill_levels)
+        VALUES ($1, $2, $3, $4, $5, $6 )`,
+            [id, skillName, category, description, isCertification, skill_levels],
             (err, result) => {
                 if (err) {
                     console.log(err)
