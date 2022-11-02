@@ -18,7 +18,7 @@ skillsRouter.get('/distinctSkillCategory', (req, res) => {
 
 // Get All skill levels
 skillsRouter.get('/skill_Levels', (req, res) => {
-    pool.query(`SELECT * FROM skill_levels`, (err, result) => {
+    pool.query(`SELECT DISTINCT competency_type FROM skill_levels`, (err, result) => {
         if (err) {
             res.status(500).send(err)
         } else {
