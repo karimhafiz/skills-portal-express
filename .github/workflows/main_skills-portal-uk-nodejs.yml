@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'skills-portal-uk-nodejs'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_28A2C0A0314C4D29A134B3CACF757BAE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FD4F25A574FA45CC9074C7069AC1108C  }} //  secrets.AZUREAPPSERVICE_PUBLISHPROFILE_28A2C0A0314C4D29A134B3CACF757BAE 
           package: .
