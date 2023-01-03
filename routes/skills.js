@@ -28,7 +28,7 @@ skillsRouter.get('/skill_Levels', (req, res) => {
 })
 
 
-// Get all skills
+// Get all skillss
 skillsRouter.get('/all', (req, res) => {
     pool.query(`SELECT skills.id, skill_name, description, category, is_certification, competency_type, lvl_1, lvl_2, lvl_3 FROM skills 
     LEFT JOIN skill_levels
@@ -41,7 +41,10 @@ skillsRouter.get('/all', (req, res) => {
     })
 })
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5aaf0a41ef3fe4810c393a7810f43ff656b2beca
 // Get all entry employee skills For excel ss
 skillsRouter.get('/extract/all', (req, res) => {
     pool.query(`SELECT * FROM employees JOIN employees_skills ON employees.id = employees_skills.employee_id JOIN skills ON employees_skills.skill_id = skills.id`, (err, result) => {
