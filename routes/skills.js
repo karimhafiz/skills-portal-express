@@ -28,7 +28,7 @@ skillsRouter.get('/skill_Levels', (req, res) => {
 })
 
 
-// Get all skills
+// Get all skillss
 skillsRouter.get('/all', (req, res) => {
     pool.query(`SELECT skills.id, skill_name, description, category, is_certification, competency_type, lvl_1, lvl_2, lvl_3 FROM skills 
     LEFT JOIN skill_levels
