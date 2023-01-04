@@ -43,7 +43,13 @@ skillsRouter.get('/all', (req, res) => {
 
 // Get all entry employee skills For excel sssssasdasd
 skillsRouter.get('/extract/all', (req, res) => {
-    pool.query(`SELECT * FROM employees JOIN employees_skills ON employees.id = employees_skills.employee_id JOIN skills ON employees_skills.skill_id = skills.id`, (err, result) => {
+    pool.query(`SELECT e.id AS employee_ID, e.firstname, e.lastname, e.country, e.email, employees_skills.skill_id,
+     skills.skill_name, skills.description, skills.is_certification, 
+     employees_skills.entry_uuid,employees_skills.skill_level, employees_skills.created_at, employees_skills.updated_at,m.firstname AS Manager_firstName,
+      m.lastname AS Manager_lastName 
+      FROM employees e LEFT JOIN employees m ON m.id = e.manager_id 
+      LEFT JOIN employees_skills ON employees_skills.employee_id = e.id
+       LEFT JOIN skills ON employees_skills.skill_id = skills.id;`, (err, result) => {
         if (err) {
             res.status(500).send(err)
         } else {
