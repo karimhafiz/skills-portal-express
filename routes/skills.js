@@ -27,39 +27,43 @@ skillsRouter.get('/skill_Levels', (req, res) => {
     })
 })
 
-
 // Get all skillss
 skillsRouter.get('/all', (req, res) => {
-    pool.query(`SELECT skills.id, skill_name, description, category, is_certification, competency_type, lvl_1, lvl_2, lvl_3 FROM skills 
+    pool.query(
+        `SELECT skills.id, skill_name, description, category, is_certification, competency_type, lvl_1, lvl_2, lvl_3 FROM skills 
     LEFT JOIN skill_levels
-    ON skills.skill_levels = skill_levels.id`, (err, result) => {
-        if (err) {
-            res.status(500).send(err)
-        } else {
-            res.send(result.rows)
+    ON skills.skill_levels = skill_levels.id`,
+        (err, result) => {
+            if (err) {
+                res.status(500).send(err)
+            } else {
+                res.send(result.rows)
+            }
         }
-    })
+    )
 })
 
 // Get all entry employee skills For excel sssssasdasd
 skillsRouter.get('/extract/all', (req, res) => {
-    pool.query(`SELECT e.id AS employee_ID, e.firstname, e.lastname, e.country, e.email, 
-    employees_skills.skill_id, skills.skill_name, skills.description, skills.is_certification, 
+    pool.query(
+        `SELECT e.id AS employee_ID, e.firstname, e.lastname, e.country, e.email, 
+    employees_skills.skill_id, skills.skill_name, skills.category, skills.description, skills.is_certification, 
     employees_skills.entry_uuid,employees_skills.skill_level, employees_skills.created_at, 
     employees_skills.updated_at, 
     m.firstname AS Manager_firstName, m.lastname AS Manager_lastName, m.email AS Manager_email, 
     e.country AS Manager_Country 
     FROM employees e LEFT JOIN employees m ON m.id = e.manager_id 
     LEFT JOIN employees_skills ON employees_skills.employee_id = e.id 
-    LEFT JOIN skills ON employees_skills.skill_id = skills.id`, (err, result) => {
-        if (err) {
-            res.status(500).send(err)
-        } else {
-            res.send(result.rows)
+    LEFT JOIN skills ON employees_skills.skill_id = skills.id`,
+        (err, result) => {
+            if (err) {
+                res.status(500).send(err)
+            } else {
+                res.send(result.rows)
+            }
         }
-    })
+    )
 })
-
 
 // Search uses query params in search e.g. endpoint.com/skills/search?skill_name=SEARCHTERM
 skillsRouter.get('/search', (req, res) => {
